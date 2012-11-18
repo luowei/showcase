@@ -106,4 +106,20 @@ public class JacksonUtilsTest {
         childBeans = jacksonUtils.toObject(listJSON, new TypeReference<List<ChildBean>>() {});
         logger.debug("after convert list：{}", childBeans.toString());
     }
+
+    /**
+     * 演示使用 JSON 中的值更新一个对象。
+     */
+    @Test
+    public void testUpdateObject() {
+        String json = jacksonUtils.toJSON(childBean);
+        logger.debug("json：{}", json);
+
+        ChildBean original = new ChildBean();
+        original.setValue("originalValue");
+
+        logger.debug("original childBean：{}", original.toString());
+        logger.debug("update childBean：{}", jacksonUtils.updateObject(original, json));
+    }
+
 }

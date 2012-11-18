@@ -78,11 +78,35 @@ public class JacksonUtils {
         }
     }
 
+    /**
+     * 构造复杂对象使用 TypeReference 描述
+     * @param json
+     * @param typeReference
+     * @param <T>
+     * @return
+     */
     public <T> T toObject(String json, TypeReference<T> typeReference) {
         try {
             return this.objectMapper.readValue(json, typeReference);
         } catch (IOException e) {
             logger.error("toObject IOException：{}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    /**
+     * 使用 JSON 中的值，更新一个 Java 对象
+     * @param original
+     * @param json
+     * @param <T>
+     * @return
+     */
+    public <T> T updateObject(T original, String json) {
+        try {
+            this.objectMapper.readerForUpdating(original).readValue(json);
+            return original;
+        } catch (IOException e) {
+            logger.error("updateObject IOException：{}", e.getMessage(), e);
             return null;
         }
     }
