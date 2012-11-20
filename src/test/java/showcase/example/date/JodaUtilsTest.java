@@ -38,7 +38,7 @@ public class JodaUtilsTest {
      */
     @Test
     public void testFormat() {
-        logger.debug("format date = {}", jodaUtils.getDateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        logger.debug("format date = {}", jodaUtils.getDateTime().toString("y-M-d, E"));
     }
 
     /**
