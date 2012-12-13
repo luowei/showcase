@@ -37,7 +37,6 @@ public class SlowResourceHandler implements Runnable {
         }
         writer.println("sleep 10 second continue execute...");
         writer.flush();
-
         asyncCtx.complete();
     }
 }

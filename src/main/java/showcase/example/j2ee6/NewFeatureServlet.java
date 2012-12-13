@@ -24,6 +24,5 @@ public class NewFeatureServlet extends HttpServlet {
 
         resp.getWriter().println("servlet method executed...");
         resp.getWriter().flush();
-
     }
 }
