@@ -13,8 +13,6 @@ import java.io.PrintWriter;
  */
 public class SlowResourceHandler implements Runnable {
 
-    private final Logger logger = LoggerFactory.getLogger(SlowResourceHandler.class);
-
     private AsyncContext asyncCtx;
 
     public void setAsyncCtx(AsyncContext asyncCtx) {
@@ -23,20 +21,18 @@ public class SlowResourceHandler implements Runnable {
 
     @Override
     public void run() {
-        logger.info("start asynchronous execute...");
         PrintWriter writer = null;
         try {
             writer = asyncCtx.getResponse().getWriter();
         } catch (IOException e) {
         }
-        writer.println("start asynchronous execute...");
+        writer.println("<br/>start asynchronous execute...");
         writer.flush();
         try {
-            Thread.sleep(10000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
         }
-        writer.println("sleep 10 second continue execute...");
-        writer.flush();
+        writer.println("<br/>sleep 3 second continue execute...");
         asyncCtx.complete();
     }
 }
