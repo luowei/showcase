@@ -29,10 +29,10 @@ public class SlowResourceHandler implements Runnable {
         writer.println("<br/>start asynchronous execute...");
         writer.flush();
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
         }
-        writer.println("<br/>sleep 3 second continue execute...");
+        writer.println("<br/>sleep 2 second continue execute...");
         asyncCtx.complete();
     }
 }
