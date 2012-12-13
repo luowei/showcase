@@ -51,6 +51,7 @@ public class JacksonUtilsTest {
      */
     @Test
     public void testToJSON() throws Exception {
+        jacksonUtils.formatJsonText();
         logger.debug("childBean convert：{}", jacksonUtils.toJSON(childBean));
 
         logger.debug("parentBean convert：{}", jacksonUtils.toJSON(parentBean));

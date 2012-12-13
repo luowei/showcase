@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,34 +24,37 @@ public class JacksonUtils {
     /**
      * Jackson 映射器API，用以实现 JSON 和 Object 之间的转换
      */
-    private ObjectMapper objectMapper;
-
-    public JacksonUtils() {
-        this.objectMapper = new ObjectMapper();
-    }
+    private static ObjectMapper objectMapper  = new ObjectMapper();
 
     /**
      * Object --> JSON
      * 忽略 Object 对象中为 null 的属性
      */
     public void toStringIgnoreEmpty() {
-        this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
+    /**
+     * 格式化输出 Json Text
+     */
+    public void formatJsonText() {
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     }
 
     /**
      * 设置转换时间格式
      *
-     * @param dateFormat
+     * @param dateFormat dateFormat
      */
     public void setDateFormat(DateFormat dateFormat) {
-        this.objectMapper.setDateFormat(dateFormat);
+        objectMapper.setDateFormat(dateFormat);
     }
 
     /**
      * Object --> JSON 方法
      *
-     * @param object
-     * @return
+     * @param object targetObject instance
+     * @return jsonText
      */
     public String toJSON(Object object) {
         try {
@@ -66,12 +70,12 @@ public class JacksonUtils {
      *
      * @param json    json字符串
      * @param classes 映射Java Class
-     * @param <T>
-     * @return
+     * @param <T> target Object Type
+     * @return target Object Type
      */
     public <T> T toObject(String json, Class<T> classes) {
         try {
-            return this.objectMapper.readValue(json, classes);
+            return objectMapper.readValue(json, classes);
         } catch (IOException e) {
             logger.error("toObject IOException：{}", e.getMessage(), e);
             return null;
@@ -80,14 +84,14 @@ public class JacksonUtils {
 
     /**
      * 构造复杂对象使用 TypeReference 描述
-     * @param json
-     * @param typeReference
-     * @param <T>
-     * @return
+     * @param json jsonText
+     * @param typeReference TypeReference instance
+     * @param <T> target object type
+     * @return target object instance
      */
     public <T> T toObject(String json, TypeReference<T> typeReference) {
         try {
-            return this.objectMapper.readValue(json, typeReference);
+            return objectMapper.readValue(json, typeReference);
         } catch (IOException e) {
             logger.error("toObject IOException：{}", e.getMessage(), e);
             return null;
@@ -96,14 +100,14 @@ public class JacksonUtils {
 
     /**
      * 使用 JSON 中的值，更新一个 Java 对象
-     * @param original
-     * @param json
-     * @param <T>
-     * @return
+     * @param original original Object
+     * @param json json Data
+     * @param <T> object type
+     * @return target object instance
      */
     public <T> T updateObject(T original, String json) {
         try {
-            this.objectMapper.readerForUpdating(original).readValue(json);
+            objectMapper.readerForUpdating(original).readValue(json);
             return original;
         } catch (IOException e) {
             logger.error("updateObject IOException：{}", e.getMessage(), e);
